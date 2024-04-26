@@ -1,4 +1,5 @@
-# PhantomKey - Win32 keylogger written in C++
+                              # PhantomKey
+                      **Win32 keylogger written in C++**
 
 ## Project structure
 
